@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "59025072-c20b-4720-a179-caee301dd19a",
+		"name": "todolist - heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all todolist",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://floating-meadow-18092.herokuapp.com/todolist",
+					"protocol": "https",
+					"host": [
+						"floating-meadow-18092",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todolist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add todolist",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"吃飯\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://floating-meadow-18092.herokuapp.com/todolist",
+					"protocol": "https",
+					"host": [
+						"floating-meadow-18092",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todolist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改title",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"title\": \"睡覺\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://floating-meadow-18092.herokuapp.com/todolist/c0231093-f212-40be-949f-fc9146f70e55",
+					"protocol": "https",
+					"host": [
+						"floating-meadow-18092",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todolist",
+						"c0231093-f212-40be-949f-fc9146f70e55"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete all todolist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://floating-meadow-18092.herokuapp.com/todolist/all",
+					"protocol": "https",
+					"host": [
+						"floating-meadow-18092",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todolist",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete one",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://floating-meadow-18092.herokuapp.com/todolist/835e64da-4be0-4597-a38e-c2b6c28dd0bc",
+					"protocol": "https",
+					"host": [
+						"floating-meadow-18092",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todolist",
+						"835e64da-4be0-4597-a38e-c2b6c28dd0bc"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
