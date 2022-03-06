@@ -14,8 +14,6 @@ const requestListener = (req, res) => {
     req.on('data', chunk => {
         body += chunk;
     });
-    console.log(url);
-    //!url.includes('/todolist')
     if (!url.startsWith('/todolist')) {
         res.writeHead(404, headers);
         const jsonStr = JSON.stringify({
@@ -24,7 +22,8 @@ const requestListener = (req, res) => {
         });
         res.write(jsonStr);
         res.end();
-    } else if (method === 'GET') {
+    } else if (url === '/todolist' && method === 'GET') {
+        console.log('in get');
         res.writeHead(200, headers);
         const jsonStr = JSON.stringify({
             'status': 'success',
@@ -107,8 +106,6 @@ const requestListener = (req, res) => {
         const urlArr = url.split('/');
         const delId = urlArr.pop();//urlArr[urlArr.length-1];
         const delIndex = todoList.findIndex(ele => ele.id === delId);
-        console.log(todoList[delIndex]);
-
         if (delIndex !== -1) {
             // 將單筆todo數據清除
             const jsonStr = JSON.stringify({
@@ -130,76 +127,15 @@ const requestListener = (req, res) => {
         });
         res.write(jsonStr);
         res.end();
+    }else{
+        res.writeHead(404, headers);
+        const jsonStr = JSON.stringify({
+            'status': 'false',
+            'message': '無此網路路由',
+        });
+        res.write(jsonStr);
+        res.end();
     }
-
-
-    // if (url === '/todolist' && method === 'GET') {
-    //     res.writeHead(200, headers);
-    //     const jsonStr = JSON.stringify({
-    //         'status': 'success',
-    //         'data': todoList,
-    //     });
-    //     res.write(jsonStr);
-    //     res.end();
-    // } else if (url === '/todolist' && method === 'POST') {
-    //     res.writeHead(200, headers);
-    //     req.on('end', () => {
-    //         try {
-    //             const title = JSON.parse(body).title;
-    //             if (title !== undefined) {
-    //                 const todo = {
-    //                     'title': title,
-    //                     'id': uuidv4(),
-    //                 };
-    //                 todoList.push(todo);
-    //                 const jsonStr = JSON.stringify({
-    //                     'status': 'success',
-    //                     'data': todoList,
-    //                 });
-    //                 res.write(jsonStr);
-    //                 res.end();
-    //             } else {
-    //                 errHandle(res, headers);
-    //             }
-
-    //         } catch (err) {
-    //             errHandle(res, headers);
-    //         }
-
-    //     });
-
-    // } else if (url === '/todoList' && method === 'DELETE') { //delete all todo
-    //     res.writeHead(200, headers);
-    //     // 將todos陣列全部的數據清除
-    //     //方法一
-    //     // todos.length=0;
-    //     // console.log('after delete:',todos);
-    //     todoList=[];
-    //     const jsonStr = JSON.stringify({
-    //         'status': 'success',
-    //         'data': todoList,
-    //         'delete': 'yes',
-    //     });
-    //     res.write(jsonStr);
-    //     res.end();
-    // } else if (method === "OPTIONS") {
-    //     res.writeHead(200, headers);
-    //     const jsonStr = JSON.stringify({
-    //         'status': 'success',
-    //         'data': ['OPtions success'],
-    //     });
-    //     res.write(jsonStr);
-    //     res.end();
-    // } else {
-    //     res.writeHead(404, headers);
-    //     const jsonStr = JSON.stringify({
-    //         'status': 'false',
-    //         'message': '無此網路路由',
-    //     });
-    //     res.write(jsonStr);
-    //     res.end();
-    // }
-
 }
 
 
