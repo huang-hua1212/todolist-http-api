@@ -14,15 +14,7 @@ const requestListener = (req, res) => {
     req.on('data', chunk => {
         body += chunk;
     });
-    if (!url.startsWith('/todolist')) {
-        res.writeHead(404, headers);
-        const jsonStr = JSON.stringify({
-            'status': 'false',
-            'message': '無此網路路由',
-        });
-        res.write(jsonStr);
-        res.end();
-    } else if (url === '/todolist' && method === 'GET') {
+    if (url === '/todolist' && method === 'GET') {
         console.log('in get');
         res.writeHead(200, headers);
         const jsonStr = JSON.stringify({
@@ -31,7 +23,7 @@ const requestListener = (req, res) => {
         });
         res.write(jsonStr);
         res.end();
-    } else if (method === 'POST') {
+    }else if (url === '/todolist' && method === 'POST') {
         res.writeHead(200, headers);
         req.on('end', () => {
             try {
@@ -57,7 +49,40 @@ const requestListener = (req, res) => {
             }
 
         });
-    } else if (method === 'PATCH') {
+    } else if (url === '/todolist/all' && method === 'DELETE') {
+        res.writeHead(200, headers);
+        // 將todos陣列全部的數據清除
+        //方法一
+        // todos.length=0;
+        // console.log('after delete:',todos);
+        // 方法二
+        todoList = [];
+        const jsonStr = JSON.stringify({
+            'status': 'success',
+            'data': todoList,
+            'delete': 'yes',
+        });
+        res.write(jsonStr);
+        res.end();
+    } else if (url.startsWith('/todolist/') &&method === 'DELETE') {
+        res.writeHead(200, headers);
+        const urlArr = url.split('/');
+        const delId = urlArr.pop();//urlArr[urlArr.length-1];
+        const delIndex = todoList.findIndex(ele => ele.id === delId);
+        if (delIndex !== -1) {
+            // 將單筆todo數據清除
+            const jsonStr = JSON.stringify({
+                'status': 'success',
+                'delete': 'yes',
+                'id': delId,
+                'data': todoList,
+            });
+            res.write(jsonStr);
+            res.end();
+        } else {
+            errHandle(res, headers);
+        }
+    } else if (url.startsWith('/todolist/') && method === 'PATCH') {
         res.writeHead(200, headers);
         req.on('end', () => {
             const title = JSON.parse(body).title;
@@ -86,39 +111,6 @@ const requestListener = (req, res) => {
             }
 
         });
-    } else if (url === '/todolist/all' && method === 'DELETE') {
-        res.writeHead(200, headers);
-        // 將todos陣列全部的數據清除
-        //方法一
-        // todos.length=0;
-        // console.log('after delete:',todos);
-        // 方法二
-        todoList = [];
-        const jsonStr = JSON.stringify({
-            'status': 'success',
-            'data': todoList,
-            'delete': 'yes',
-        });
-        res.write(jsonStr);
-        res.end();
-    } else if (method === 'DELETE') {
-        res.writeHead(200, headers);
-        const urlArr = url.split('/');
-        const delId = urlArr.pop();//urlArr[urlArr.length-1];
-        const delIndex = todoList.findIndex(ele => ele.id === delId);
-        if (delIndex !== -1) {
-            // 將單筆todo數據清除
-            const jsonStr = JSON.stringify({
-                'status': 'success',
-                'delete': 'yes',
-                'id': delId,
-                'data': todoList,
-            });
-            res.write(jsonStr);
-            res.end();
-        } else {
-            errHandle(res, headers);
-        }
     } else if (method === "OPTIONS") {
         res.writeHead(200, headers);
         const jsonStr = JSON.stringify({
@@ -138,8 +130,5 @@ const requestListener = (req, res) => {
     }
 }
 
-
-
-/////ffff999
 const server = http.createServer(requestListener);
 server.listen(process.env.PORT || 3005);
