@@ -25,8 +25,10 @@ const requestListener = (req, res) => {
         res.end();
     }else if (url === '/todolist' && method === 'POST') {
         res.writeHead(200, headers);
+        // 抓是否是json的格式，若是json格式走try，若不是走catch
         req.on('end', () => {
             try {
+                //抓json中是否含有title屬性，若抓不到，跑else
                 const title = JSON.parse(body).title;
                 if (title === undefined) {
                     errHandle(res, headers);
