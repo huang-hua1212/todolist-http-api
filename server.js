@@ -45,6 +45,7 @@ const requestListener = (req, res) => {
                     res.end();
                 }
             } catch (err) {
+                console.log('json fail');
                 errHandle(res, headers);
             }
 
@@ -85,8 +86,8 @@ const requestListener = (req, res) => {
     } else if (url.startsWith('/todolist/') && method === 'PATCH') {
         res.writeHead(200, headers);
         req.on('end', () => {
-            const title = JSON.parse(body).title;
             try {
+                const title = JSON.parse(body).title;
                 if (title === 'undefined') {
                     errHandle(res, headers);
                 } else {
